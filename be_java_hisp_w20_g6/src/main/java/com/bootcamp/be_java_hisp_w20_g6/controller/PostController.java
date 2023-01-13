@@ -20,10 +20,10 @@ public class PostController {
 
     @PostMapping("/post")
     public ResponseEntity<Boolean> save(@RequestBody @Valid PostRequestDto requestDto) {
-        return new ResponseEntity<Boolean>(postService.save(requestDto), HttpStatus.OK);
+        return new ResponseEntity<>(postService.save(requestDto), HttpStatus.OK);
     }
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<PostListResponseDTO> getPost(@PathVariable @NotNull int userId, @RequestParam(required = false) String order) {
+    public ResponseEntity<PostListResponseDTO> getPost(@PathVariable @NotNull Integer userId, @RequestParam(required = false) String order) {
         return new ResponseEntity<>(postService.postFollowedLastWeeks(userId, order), HttpStatus.OK); 
     }
 }

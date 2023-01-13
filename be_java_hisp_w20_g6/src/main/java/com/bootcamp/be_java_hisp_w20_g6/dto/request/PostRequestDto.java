@@ -2,6 +2,7 @@ package com.bootcamp.be_java_hisp_w20_g6.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;

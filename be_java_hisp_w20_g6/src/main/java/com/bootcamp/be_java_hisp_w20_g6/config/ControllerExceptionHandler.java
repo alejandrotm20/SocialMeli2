@@ -50,7 +50,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> invalidParam(MethodArgumentNotValidException e){
-        ErrorResponseDto error = new ErrorResponseDto("MethodArgumentNotValidException", e.getMessage());
+        ErrorResponseDto error = new ErrorResponseDto("MethodArgumentNotValidException", e.getBindingResult().getFieldError().getDefaultMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
