@@ -9,33 +9,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+
 @RestController
 @RequestMapping("users")
 public class UserController {
     @Autowired
     IUserService userService;
     @PostMapping("/{userId}/follow/{userIdToFollow}")
-    public ResponseEntity<Boolean> followUser(@PathVariable int userId, @PathVariable int userIdToFollow){
+    public ResponseEntity<Boolean> followUser(@PathVariable @NotNull Integer userId, @PathVariable @NotNull Integer userIdToFollow){
         return new ResponseEntity<>(userService.followUser(userId, userIdToFollow), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/followers/count")
-    public ResponseEntity<FollowersCountResponseDto> countFollowers (@PathVariable int userId){
+    public ResponseEntity<FollowersCountResponseDto> countFollowers (@PathVariable @NotNull Integer userId){
         return new ResponseEntity<>(userService.getFollowersCount(userId), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<FollowersListResponseDto> listFollowers(@PathVariable int userId, @RequestParam (required = false) String order){
+    public ResponseEntity<FollowersListResponseDto> listFollowers(@PathVariable @NotNull Integer userId, @RequestParam (required = false) String order){
         return new ResponseEntity<>(userService.getFollowersList(userId, order), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<FollowedListResponseDto> listFollowed(@PathVariable int userId, @RequestParam (required = false) String order){
+    public ResponseEntity<FollowedListResponseDto> listFollowed(@PathVariable @NotNull Integer userId, @RequestParam (required = false) String order){
         return new ResponseEntity<>(userService.getFollowedList(userId, order), HttpStatus.OK);
     }
 
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<Boolean> unFollowUser(@PathVariable int userId, @PathVariable int userIdToUnfollow){
+    public ResponseEntity<Boolean> unFollowUser(@PathVariable @NotNull Integer userId, @PathVariable @NotNull Integer userIdToUnfollow){
         return new ResponseEntity<>(userService.unFollowUser(userId, userIdToUnfollow), HttpStatus.OK);
     }
 
