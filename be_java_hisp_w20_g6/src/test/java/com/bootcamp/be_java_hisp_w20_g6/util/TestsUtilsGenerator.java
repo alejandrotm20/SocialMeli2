@@ -3,6 +3,7 @@ package com.bootcamp.be_java_hisp_w20_g6.util;
 import com.bootcamp.be_java_hisp_w20_g6.dto.response.FollowersCountResponseDto;
 import com.bootcamp.be_java_hisp_w20_g6.model.UserModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestsUtilsGenerator {
@@ -11,7 +12,17 @@ public class TestsUtilsGenerator {
         return follower1;
     }
 
+
     public static UserModel getUserModel(){
         return new UserModel(1, "pedrito", List.of(2, 3),  List.of(2, 3));
+    }
+
+
+    public static UserModel getUserToFollow(){
+        return new UserModel(1, "pedrito", new ArrayList<>(),  new ArrayList<>());
+    }
+
+    public static UserModel getUserFollow(){
+        return new UserModel(2, "pablito", new ArrayList<>(),  new ArrayList<>());
     }
 }
