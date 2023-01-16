@@ -104,13 +104,49 @@ class UserServiceImplTest {
 
     @Test
     @DisplayName("US0008 - T-0003, Verificar que el tipo de ordenamiento alfabético exista (US-0008). Camino Ordenamiento no existe")
-    void shouldHandleException(){
+    void shouldHandleNameOrderException(){
         //arrange
         List<UserResponseDto> listUsers=TestsUtilsGenerator.getListUserRespondeDTOWithFollowers();
         String typeSort="orderInverse";
         //act and assert
         assertThrows(InvalidParamException.class,
                 ()->mockUserServiceImpl.orderReturnValues(listUsers,typeSort));
+    }
+
+    @Test
+    @DisplayName("US-0008 - T-0004, Verificar el correcto ordenamiento ascendente por nombre")
+    void shouldValidateOrderList(){
+
+        //arrange
+
+        String typeSort="name_asc";
+        List<UserResponseDto> listUsers=TestsUtilsGenerator.getListUserRespondeDTOWithFollowers();
+
+        //act
+        List<UserResponseDto> response =mockUserServiceImpl.orderReturnValues(listUsers,typeSort);
+        //assert
+
+        assertEquals("Daniela",response.get(0).getUser_name());
+        assertEquals("David",response.get(1).getUser_name());
+
+    }
+
+    @Test
+    @DisplayName("US-0008 - T-0004, Verificar el correcto ordenamiento descendente por nombre")
+    void shouldValidateDescList(){
+
+        //arrange
+
+        String typeSort="name_desc";
+        List<UserResponseDto> listUsers=TestsUtilsGenerator.getListUserRespondeDTOWithFollowers();
+
+        //act
+        List<UserResponseDto> response =mockUserServiceImpl.orderReturnValues(listUsers,typeSort);
+        //assert
+
+        assertEquals("Diana",response.get(0).getUser_name());
+        assertEquals("David",response.get(1).getUser_name());
+
     }
 
 }
