@@ -89,8 +89,8 @@ public class UserServiceImpl implements IUserService {
         List<Integer> fanFollowedList = user.getFollowed();
         int followIndex = fanFollowedList.indexOf(userToUnfollow_id);
         if (followIndex >= 0) {
-            user.getFollowed().remove(followIndex);
-            userToUnfollow.getFollowers().remove((Integer) user_id);
+             user.getFollowed().remove(followIndex);
+             userToUnfollow.getFollowers().remove((Integer) user_id);
             return true;
         } else {
             throw new FollowerNotFoundException("Usuario no esta siguiendo al vendedor.");

@@ -1,10 +1,12 @@
-package com.bootcamp.be_java_hisp_w20_g6.Implement;
+package com.bootcamp.be_java_hisp_w20_g6.Service;
 
 import com.bootcamp.be_java_hisp_w20_g6.dto.response.FollowersCountResponseDto;
+import com.bootcamp.be_java_hisp_w20_g6.exception.FollowerNotFoundException;
 import com.bootcamp.be_java_hisp_w20_g6.exception.UserNotFoundException;
 import com.bootcamp.be_java_hisp_w20_g6.model.UserModel;
 import com.bootcamp.be_java_hisp_w20_g6.repository.UserRepository;
 import com.bootcamp.be_java_hisp_w20_g6.service.Implement.UserServiceImpl;
+import com.bootcamp.be_java_hisp_w20_g6.util.FixtureUser;
 import com.bootcamp.be_java_hisp_w20_g6.util.TestsUtilsGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceImplTest {
+class UserServiceImplTest extends FixtureUser {
 
     @Mock
     UserRepository mockUserRepository;
@@ -62,4 +64,26 @@ class UserServiceImplTest {
         assertThrows(UserNotFoundException.class, ()->mockUserServiceImpl.followUser(2, 9999));
     }
 
+    @Test
+    @DisplayName("US0007 - T-0002, Verificar que el usuario a dejar de seguir exista.")
+    void shouldValidateUserUnFollowed(){
+        //arrange
+
+        when(mockUserRepository.getUserById(1)).thenReturn(this.listUsersTest.get(0));
+        when(mockUserRepository.getUserById(2)).thenReturn(this.listUsersTest.get(1));
+        //act
+        boolean result = mockUserServiceImpl.unFollowUser(1,2);
+        //assert
+        assertTrue(result);
+    }
+    @Test
+    @DisplayName("US0007 - T-0002, Verificar que el usuario a dejar de seguir no exista.")
+    void shouldValidateUserNotUnFollowed(){
+        //arrange
+        when(mockUserRepository.getUserById(7)).thenReturn(null);
+        //act
+        //assert
+        assertThrows(UserNotFoundException.class, ()-> mockUserServiceImpl.unFollowUser(1,7));
+
+    }
 }
