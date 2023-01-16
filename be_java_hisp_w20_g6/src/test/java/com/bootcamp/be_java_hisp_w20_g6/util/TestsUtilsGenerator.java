@@ -52,7 +52,7 @@ public class TestsUtilsGenerator {
                         new PostResponseDTO(1, 2, LocalDate.of(2023, 1, 15),
                             new ProductModel(1, "Silla", "Gamer", "Racer", "Red & Black", "Special Edition"),
                             100, 1500.50),
-                        new PostResponseDTO(1, 1, LocalDate.of(2023, 1, 17),
+                        new PostResponseDTO(1, 3, LocalDate.of(2023, 1, 17),
                             new ProductModel(1, "Silla", "Gamer", "Racer", "Red & Black", "Special Edition"),
                             100, 1500.50)
                 )

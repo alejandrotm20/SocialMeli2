@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,6 +53,31 @@ public class PostServiceImplTest {
         //act and assert
         assertThrows(InvalidParamException.class,
                 ()->mockPostServiceImpl.returnOrderPostByDate(listPost, typeSort));
+    }
+
+    @Test
+    @DisplayName("US-0009 - T-0006, Verificar el correcto ordenamiento ascendente")
+    void shouldSortByDateAsc() {
+        //arrange2023
+        String typeSort="date_asc";
+        List<PostResponseDTO> listPosts=TestsUtilsGenerator.getPosts();
+        //act
+        List<PostResponseDTO> response =mockPostServiceImpl.returnOrderPostByDate(listPosts, typeSort);
+        //assert
+        assertEquals(LocalDate.of(2023,1,13),response.get(0).getDate());
+        assertEquals(LocalDate.of(2023,1,15),response.get(1).getDate());
+    }
+    @Test
+    @DisplayName("US-0009 - T-0006, Verificar el correcto ordenamiento descendente")
+    void shouldSortByDateDesc() {
+        //arrange
+        String typeSort="date_desc";
+        List<PostResponseDTO> listPosts=TestsUtilsGenerator.getPosts();
+        //act
+        List<PostResponseDTO> response =mockPostServiceImpl.returnOrderPostByDate(listPosts, typeSort);
+        //assert
+        assertEquals(LocalDate.of(2023,1,17),response.get(0).getDate());
+        assertEquals(LocalDate.of(2023,1,15),response.get(1).getDate());
     }
 
 }
