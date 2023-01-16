@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserResponseDto {
 
     private int user_id;

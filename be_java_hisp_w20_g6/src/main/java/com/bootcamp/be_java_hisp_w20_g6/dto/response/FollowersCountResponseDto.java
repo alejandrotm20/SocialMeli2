@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-
 public class FollowersCountResponseDto {
     private int user_id;
     private String user_name;
