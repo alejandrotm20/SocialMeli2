@@ -1,12 +1,12 @@
 package com.bootcamp.be_java_hisp_w20_g6.Service;
 
 import com.bootcamp.be_java_hisp_w20_g6.dto.response.FollowersCountResponseDto;
-import com.bootcamp.be_java_hisp_w20_g6.exception.FollowerNotFoundException;
+import com.bootcamp.be_java_hisp_w20_g6.dto.response.UserResponseDto;
+import com.bootcamp.be_java_hisp_w20_g6.exception.InvalidParamException;
 import com.bootcamp.be_java_hisp_w20_g6.exception.UserNotFoundException;
 import com.bootcamp.be_java_hisp_w20_g6.model.UserModel;
 import com.bootcamp.be_java_hisp_w20_g6.repository.UserRepository;
 import com.bootcamp.be_java_hisp_w20_g6.service.Implement.UserServiceImpl;
-import com.bootcamp.be_java_hisp_w20_g6.util.FixtureUser;
 import com.bootcamp.be_java_hisp_w20_g6.util.TestsUtilsGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,11 +15,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceImplTest extends FixtureUser {
+class UserServiceImplTest {
 
     @Mock
     UserRepository mockUserRepository;
@@ -32,7 +34,7 @@ class UserServiceImplTest extends FixtureUser {
     void shoudlGetFollowersCountOk() {
         //arrange
         int id = 1;
-        UserModel user = TestsUtilsGenerator.getUserModel();
+        UserModel user = TestsUtilsGenerator.getUserWithFollowers(id-1);
         when(mockUserRepository.getUserById(id)).thenReturn(user);
         //act
         FollowersCountResponseDto actual = mockUserServiceImpl.getFollowersCount(id);
@@ -44,8 +46,8 @@ class UserServiceImplTest extends FixtureUser {
     @DisplayName("US0001 - T-0001, Verificar que el usuario a seguir exista. Camino Feliz :D")
     void shouldValidateUserFollowed(){
         //arrange
-        UserModel user = TestsUtilsGenerator.getUserFollow();
-        UserModel userToFollow = TestsUtilsGenerator.getUserToFollow();
+        UserModel user = TestsUtilsGenerator.getUserWithOutFollowers(0);
+        UserModel userToFollow = TestsUtilsGenerator.getUserWithOutFollowers(1);
         when(mockUserRepository.getUserById(1)).thenReturn(user);
         when(mockUserRepository.getUserById(2)).thenReturn(userToFollow);
         //act
@@ -68,9 +70,10 @@ class UserServiceImplTest extends FixtureUser {
     @DisplayName("US0007 - T-0002, Verificar que el usuario a dejar de seguir exista.")
     void shouldValidateUserUnFollowed(){
         //arrange
-
-        when(mockUserRepository.getUserById(1)).thenReturn(this.listUsersTest.get(0));
-        when(mockUserRepository.getUserById(2)).thenReturn(this.listUsersTest.get(1));
+        UserModel user1=TestsUtilsGenerator.getUserWithFollowers(0);
+        UserModel user2=TestsUtilsGenerator.getUserWithFollowers(1);
+        when(mockUserRepository.getUserById(1)).thenReturn(user1);
+        when(mockUserRepository.getUserById(2)).thenReturn(user2);
         //act
         boolean result = mockUserServiceImpl.unFollowUser(1,2);
         //assert
@@ -86,4 +89,28 @@ class UserServiceImplTest extends FixtureUser {
         assertThrows(UserNotFoundException.class, ()-> mockUserServiceImpl.unFollowUser(1,7));
 
     }
+    @Test
+    @DisplayName("US0008 - T-0003, Verificar que el tipo de ordenamiento alfabético exista (US-0008). Camino Feliz")
+    void shouldContinueSort(){
+        //arrange
+        List<UserResponseDto> listUsers=TestsUtilsGenerator.getListUserRespondeDTOWithFollowers();
+        String typeSort="name_asc";
+        //act
+        List<UserResponseDto> response =mockUserServiceImpl.orderReturnValues(listUsers,typeSort);
+        //assert
+        assertInstanceOf(List.class,response);
+
+    }
+
+    @Test
+    @DisplayName("US0008 - T-0003, Verificar que el tipo de ordenamiento alfabético exista (US-0008). Camino Ordenamiento no existe")
+    void shouldHandleException(){
+        //arrange
+        List<UserResponseDto> listUsers=TestsUtilsGenerator.getListUserRespondeDTOWithFollowers();
+        String typeSort="orderInverse";
+        //act and assert
+        assertThrows(InvalidParamException.class,
+                ()->mockUserServiceImpl.orderReturnValues(listUsers,typeSort));
+    }
+
 }
